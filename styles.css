@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
+body {
+    /* background-color: #f5f5f5; */
+    margin: 0;
+    padding: 20px;
+    /* font-family: 'Dancing Script', cursive; 使用手写字体 */
+    font-family: "Microsoft YaHei", "SimSun", sans-serif;
+    overflow-x: hidden;
+    background-image: url('background.jpeg');
+    background-size: auto; /* 使背景图像保持原始大小 */
+    background-position: center; /* 将背景图像从左上角开始 */
+    background-repeat: repeat; /* 允许背景图像重复 */
+    min-height: 100vh; /* 确保body至少占满整个视窗高度 */
+    animation: backgroundEffect 20s ease-in-out infinite;
+}
+
+/* 添加背景动画效果 */
+@keyframes backgroundEffect {
+    0%, 100% {
+        filter: grayscale(0) blur(0px) hue-rotate(0deg);
+    }
+    20% {
+        filter: grayscale(0.3) blur(1px) hue-rotate(15deg);
+    }
+    40% {
+        filter: grayscale(1) blur(0px) hue-rotate(-15deg);
+    }
+    60% {
+        filter: grayscale(0.5) blur(3px) hue-rotate(30deg);
+    }
+    80% {
+        filter: grayscale(0.7) blur(2px) hue-rotate(-30deg);
+    }
+}
+
+/* 可以添加一个半透明的遮罩让文字更清晰 */
+#poem-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    animation: maskOpacity 15s ease-in-out infinite;
+}
+
+@keyframes maskOpacity {
+    0%, 100% {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+    50% {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+}
+
+#poem-container {
+    min-height: 100vh;
+    position: relative;
+}
+
+.poem-line {
+    font-size: 36px;
+    color: white;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    position: absolute;
+    white-space: nowrap;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.russian-text {
+    font-size: 24px; /* 稍小的字号 */
+    opacity: 0.8; /* 稍微透明 */
+    font-style: italic;
+    color: #e0e0e0; /* 略浅的颜色 */
+}
+
+.chinese-text {
+    font-size: 36px; /* 保持原有大小 */
+}
+
+/* 为不同句子应用不同的动画 */
+.poem-line:nth-child(2n) {
+    /* 偶数句：完全滑到左边 */
+    animation: slideToLeft 20s ease-in-out forwards;
+}
+
+.poem-line:nth-child(2n+1) {
+    /* 奇数句：在中途消失 */
+    animation: fadeInMiddle 20s ease-in-out forwards;
+}
+
+/* 完全滑到左边的动画 */
+@keyframes slideToLeft {
+    0% {
+        filter: blur(0px) brightness(1);
+        opacity: 0;
+        transform: translateX(100vw) skew(0deg);
+    }
+    15% {
+        opacity: 1;
+        filter: blur(0.5px) brightness(1.2);
+        transform: translateX(70vw) skew(-2deg);
+    }
+    85% {
+        opacity: 1;
+        filter: blur(1px) brightness(1);
+        transform: translateX(-30vw) skew(-2deg);
+    }
+    100% {
+        opacity: 0;
+        filter: blur(2px) brightness(0.8);
+        transform: translateX(-100%) skew(0deg);
+    }
+}
+
+/* 中途消失的动画 */
+@keyframes fadeInMiddle {
+    0% {
+        filter: blur(0px) brightness(1);
+        opacity: 0;
+        transform: translateX(100vw) skew(0deg);
+    }
+    15% {
+        opacity: 1;
+        filter: blur(0.5px) brightness(1.2);
+        transform: translateX(70vw) skew(-1deg);
+    }
+    50% {
+        opacity: 1;
+        filter: blur(1px) brightness(1.1);
+        transform: translateX(30vw) skew(1deg);
+    }
+    70% {
+        opacity: 0;
+        filter: blur(3px) brightness(0.9);
+        transform: translateX(0vw) skew(-1deg);
+    }
+    100% {
+        opacity: 0;
+        filter: blur(4px) brightness(0.7);
+        transform: translateX(-30vw) skew(0deg);
+    }
+}
+
+/* 随机添加额外的效果 */
+.poem-line:nth-child(3n) {
+    animation: fadeInMiddle 20s ease-in-out forwards, colorShift1 20s ease-in-out forwards;
+}
+
+.poem-line:nth-child(4n) {
+    animation: slideToLeft 20s ease-in-out forwards, colorShift2 20s ease-in-out forwards;
+}
+
+@keyframes colorShift1 {
+    0%, 100% {
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        filter: hue-rotate(30deg);
+    }
+}
+
+@keyframes colorShift2 {
+    0%, 100% {
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        filter: hue-rotate(-30deg);
+    }
+}
+ 
